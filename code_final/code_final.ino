@@ -1,11 +1,4 @@
 
-//#include <SHT1x.h>
-//
-//// Specify data and clock connections and instantiate SHT1x object
-//#define dataPin  10
-//#define clockPin 11
-//SHT1x sht1x(dataPin, clockPin);
-
 #include <Adafruit_BMP085.h>
 Adafruit_BMP085 bmp;
 
@@ -19,6 +12,8 @@ LiquidCrystal lcd(rs,en,d4,d5,d6,d7);
 
 #define fan 8
 
+#define buzzer 9
+
 #include <LM35.h>
 LM35 temp(A2);
 
@@ -31,6 +26,8 @@ void setup()
    pinMode(flamePin, INPUT_PULLUP);
 
    pinMode(fan, OUTPUT);
+
+   pinMode(buzzer, OUTPUT);
    
    if (!bmp.begin()) {
     Serial.println("Could not find a valid BMP085 sensor, check wiring!");
@@ -66,6 +63,7 @@ void loop()
   while (bmp.readPressure() > 100000 || digitalRead(MQpin) == HIGH || digitalRead(flamePin)==HIGH || temp.cel() > 30){
     if (digitalRead(MQpin) == HIGH) {
       lcd.print("Gas detected!!!");
+      digitalWrite(buzzer, HIGH);
       delay(1000);
       lcd.clear();
     }
@@ -80,6 +78,7 @@ void loop()
 
     if (digitalRead(flamePin) == HIGH){
       lcd.print("Flame detected!!!");
+      digitalWrite(buzzer, HIGH);
       delay(1000);
       lcd.clear();
     }
@@ -95,5 +94,6 @@ void loop()
   }
 
   digitalWrite(fan, LOW);
+  digitalWrite(buzzer, LOW);
 
 }

@@ -8,4 +8,5 @@ An Arduino uno mini project on industrial automation.
 
 # Other components:
 1. 16*2 LCD display
-2. motor
+2. Motor
+3. Buzzer
